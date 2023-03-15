@@ -1,36 +1,72 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 
 const CartItem = () => {
+  const carts = JSON.parse(localStorage.getItem("carts"));
+  const [cartList, setCartList] = useState(carts);
+  const handleMinus = (id) => {
+    const updateCart = cartList.map((item) => {
+      if (item.id === id) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    });
+    setCartList(updateCart);
+    localStorage.setItem("carts", JSON.stringify(updateCart));
+  };
+  const handlePlus = (id) => {
+    const updateCart = cartList.map((item) => {
+      if (item.id === id) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+    setCartList(updateCart);
+    localStorage.setItem("carts", JSON.stringify(updateCart));
+  };
   return (
-    <tr>
-      <td>X</td>
-      <td className="w-[120px] h-[160px]">
-        <img
-          src="https://source.unsplash.com/random"
-          alt=""
-          width="600"
-          className="object-cover w-full h-full"
-        />
-      </td>
-      <td className="max-w-[200px]">
-        Wellness And ParadiseWellnessWellness And ParadiseWellnes
-      </td>
-      <td> $67.00</td>
-      <td>
-        <div className="inline-block gap-x-5 bg-slate-200">
-          <div className="flex items-center justify-center gap-x-5">
-            <button className="w-10 h-10 transition-all hover:bg-slate-100">
-              +
-            </button>
-            <p>0</p>
-            <button className="w-10 h-10 transition-all hover:bg-slate-100">
-              -
-            </button>
-          </div>
-        </div>
-      </td>
-      <td> $67.00</td>
-    </tr>
+    <>
+      {cartList?.map((item) => {
+        return (
+          <tr key={v4()}>
+            <td>X</td>
+            <td className="w-[120px] h-[160px]">
+              <img
+                src={item.image_url}
+                alt=""
+                width="600"
+                className="object-cover w-full h-full"
+              />
+            </td>
+            <td className="max-w-[200px]">{item.name}</td>
+            <td> ${item.price}</td>
+            <td>
+              <div className="inline-block gap-x-5 bg-slate-200">
+                <div className="flex items-center justify-center gap-x-5">
+                  <button
+                    className="w-10 h-10 transition-all hover:bg-slate-100"
+                    onClick={() => handleMinus(item.id)}
+                  >
+                    -
+                  </button>
+                  <p>{item.quantity}</p>
+                  <button
+                    className="w-10 h-10 transition-all hover:bg-slate-100"
+                    onClick={() => handlePlus(item.id)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </td>
+            <td>${item.price * item.quantity}</td>
+          </tr>
+        );
+      })}
+    </>
   );
 };
 

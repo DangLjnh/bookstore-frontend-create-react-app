@@ -8,6 +8,7 @@ import User from "components/icon/User";
 import InputSearch from "components/input/InputSearch";
 import LogoBookWorm from "components/logo/LogoBookWorm";
 import React from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setProfile } from "redux/slice/userSlice";
@@ -16,6 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cookies = new Cookies();
+  const data = JSON.parse(localStorage.getItem("carts"));
   const { profile } = useSelector((state) => state.user);
   const listHeader = [
     {
@@ -54,6 +56,7 @@ const Header = () => {
     dispatch(setProfile(""));
     navigate("/login");
   };
+
   return (
     <header>
       <div className="py-2 border-b md:py-3">
@@ -70,7 +73,13 @@ const Header = () => {
           </div>
           <div className="flex items-center justify-center gap-x-7">
             <Heart width={20} height={20}></Heart>
-            <Bag width={20} height={20}></Bag>
+            <Bag
+              width={20}
+              height={20}
+              className="cursor-pointer"
+              onClick={() => navigate("/cart")}
+            ></Bag>
+            {data?.length}
             {profile ? (
               <>
                 {/* <User width={20} height={20}></User> */}

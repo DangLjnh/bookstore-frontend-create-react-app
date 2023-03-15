@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setCart } from "redux/slice/userSlice";
 import styled from "styled-components";
 const BookItemStyle = styled.div`
@@ -51,8 +52,10 @@ const BookItem = ({
   price,
   author,
   handleAddToCart,
+  slug,
   // isExistCart,
 }) => {
+  const navigate = useNavigate();
   return (
     <BookItemStyle className="flex flex-col">
       <div className={`book-image relative w-full h-[350px] ${classNameImage}`}>
@@ -66,7 +69,7 @@ const BookItem = ({
             className="block absolute text-xs text-white uppercase -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 tracking-[0.2rem] content-overlay font-medium"
             onClick={() => handleAddToCart()}
           >
-            read more
+            Add to cart
           </div>
         </div>
       </div>
@@ -74,7 +77,12 @@ const BookItem = ({
         <p className="text-lightGray text-xs mt-2 tracking-[0.2rem] uppercase">
           {author}
         </p>
-        <h2 className="text-xl font-medium font-cormorant">{title}</h2>
+        <h2
+          className="text-xl font-medium cursor-pointer font-cormorant"
+          onClick={() => navigate(`/product/${id}`)}
+        >
+          {title}
+        </h2>
         <p className="mt-auto mb-3 text-xl font-cormorant">${price}</p>
       </div>
     </BookItemStyle>

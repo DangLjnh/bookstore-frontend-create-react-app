@@ -2,9 +2,13 @@ const { createSlice, createAction } = require("@reduxjs/toolkit");
 const initialState = {
   profile: "",
   carts: [],
+  total: 0,
+  quantity: 0,
 };
 export const setProfile = createAction("setProfile");
 export const setCart = createAction("setCart");
+export const setTotal = createAction("setTotal");
+export const setQuantity = createAction("setQuantity");
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -16,6 +20,12 @@ const userSlice = createSlice({
       })
       .addCase(setCart, (state, action) => {
         state.carts = action.payload;
+      })
+      .addCase(setTotal, (state, action) => {
+        state.total = action.payload;
+      })
+      .addCase(setQuantity, (state, action) => {
+        state.quantity = action.payload;
       });
   },
 });

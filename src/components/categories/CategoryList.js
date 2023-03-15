@@ -1,6 +1,8 @@
+import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { v4 } from "uuid";
-import categoryList from "../json/category.json";
 const CategoryList = () => {
   const bgList = [
     "bg-purple-100",
@@ -9,6 +11,18 @@ const CategoryList = () => {
     "bg-blue-200",
     "bg-pink-200",
   ];
+  const [categoryList, setCategoryList] = useState([]);
+
+  const getAllCategory = async () => {
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/admin/category`
+    );
+    setCategoryList(res.data);
+  };
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
   return (
     <div className="grid grid-cols-5 gap-x-10">
       {categoryList.map((item, index) => {

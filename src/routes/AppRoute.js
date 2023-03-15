@@ -21,7 +21,7 @@ const AppRoute = () => {
           element={<CategoryPage></CategoryPage>}
         ></Route>
         <Route
-          path="/product/:slug"
+          path="/product/:id"
           element={<BookDetailPage></BookDetailPage>}
         ></Route>
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
