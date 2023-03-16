@@ -34,8 +34,8 @@ const LoginPage = () => {
   const handleLogin = async (val) => {
     const res = await loginService(val.username, val.password);
     if (res) {
-      const profiles = await profileUser(res?.data?.data?.access_token);
-      cookies.set("jwt", res?.data?.data?.access_token, { path: "/" });
+      const profiles = await profileUser(res?.data?.access_token);
+      cookies.set("jwt", res?.data?.access_token, { path: "/" });
       if (profiles) {
         dispatch(setProfile(profiles.data));
         toast.success("Login successfully!");

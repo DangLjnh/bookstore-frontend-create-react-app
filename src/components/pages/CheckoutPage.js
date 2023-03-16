@@ -1,13 +1,54 @@
+import axios from "axios";
 import Button from "components/button/Button";
+import Input from "components/input/Input";
 import Label from "components/input/Label";
 import Table from "components/table/Table";
+import Texarea from "components/texarea/Texarea";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { v4 } from "uuid";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const { total } = useSelector((state) => state.user);
+  const [bookList, setBookList] = useState([]);
+  const books = JSON.parse(localStorage.getItem("carts"));
+  const {
+    control, //mac dinh
+    handleSubmit, //sử dụng để lấy value
+    // formState: { errors, isValid },
+    // watch,
+    reset,
+    // register,
+    //mac dinh
+  } = useForm({
+    mode: onchange,
+    // defaultValues: {
+    //   status: status.approve,
+    // },
+    // resolver: yupResolver(schema),
+  });
+  const handleCreateBill = async (val) => {
+    console.log("🚀 ~ file: CheckoutPage.js:37 ~ handleCreateBill ~ val:", val);
+    const res = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/admin/bill`,
+      { ...val, total_price: total }
+    );
+    if (res) {
+      toast.success("Order successfully!");
+      navigate("/");
+    }
+  };
+  useEffect(() => {
+    setBookList(books);
+  }, []);
   return (
-    <div className="container">
+    <form className="container" onSubmit={handleSubmit(handleCreateBill)}>
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <h2 className="text-[30px] font-semibold">Billing details</h2>
@@ -20,8 +61,10 @@ const CheckoutPage = () => {
                 <Label className={"mb-2 !text-base"} name="firstName">
                   First name *
                 </Label>
-                <input
+                <Input
                   type="text"
+                  name={"first_name"}
+                  control={control}
                   className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -29,8 +72,10 @@ const CheckoutPage = () => {
                 <Label className={"mb-2 !text-base"} name="lastName">
                   Last name *
                 </Label>
-                <input
+                <Input
                   type="text"
+                  name={"last-name"}
+                  control={control}
                   className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -40,7 +85,9 @@ const CheckoutPage = () => {
                 <Label className={"mb-2 !text-base"} name="firstName">
                   Email
                 </Label>
-                <input
+                <Input
+                  control={control}
+                  name={"email"}
                   type="text"
                   className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
                 />
@@ -49,8 +96,10 @@ const CheckoutPage = () => {
                 <Label className={"mb-2 !text-base"} name="lastName">
                   Phone
                 </Label>
-                <input
+                <Input
                   type="text"
+                  control={control}
+                  name={"phone_number"}
                   className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -59,7 +108,9 @@ const CheckoutPage = () => {
               <Label className={"mb-2 !text-base"} name="firstName">
                 Address
               </Label>
-              <input
+              <Input
+                name={"address"}
+                control={control}
                 type="text"
                 className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
               />
@@ -68,15 +119,16 @@ const CheckoutPage = () => {
               <Label className={"mb-2 !text-base"} name="firstName">
                 Order notes (optional)
               </Label>
-              <textarea
+              <Texarea control={control} name="note"></Texarea>
+              {/* <textarea
                 name="order_comments"
                 className="w-full h-[150px] p-3 text-gray-700 border-2 rounded"
                 id="order_comments"
                 placeholder="Notes about your order, e.g. special notes for delivery."
                 rows="2"
                 cols="5"
-                spellcheck="false"
-              ></textarea>
+                spellCheck="false"
+              ></textarea> */}
             </div>
           </div>
           <div className="w-[50%] h-full]">
@@ -87,18 +139,24 @@ const CheckoutPage = () => {
                   <td className="">Subtotal</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="">
-                    Wellness And Paradise × <span>2</span>
-                  </td>
-                  <td className="">$134.00</td>
+                  {bookList?.map((item) => {
+                    return (
+                      <>
+                        <td className="">
+                          {item?.name} × <span>{item?.quantity}</span>
+                        </td>
+                        <td className="">${item.quantity * item.price}</td>
+                      </>
+                    );
+                  })}
                 </tr>
                 <tr className="border-b">
                   <td className="">Shipping</td>
-                  <td className="">$30.00</td>
+                  <td className="">$300000</td>
                 </tr>
                 <tr className="border-b">
                   <td className="">Total</td>
-                  <td className="!font-bold">$146.00</td>
+                  <td className="!font-bold">${total + 300000}</td>
                 </tr>
               </tbody>
             </Table>
@@ -109,6 +167,7 @@ const CheckoutPage = () => {
             </p>
             <div className="text-right">
               <Button
+                type="submit"
                 className={"px-12 py-3 my-5 uppercase tracking-widest "}
                 onClick={() => navigate("/checkout")}
               >
@@ -118,7 +177,7 @@ const CheckoutPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

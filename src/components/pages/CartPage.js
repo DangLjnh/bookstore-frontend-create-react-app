@@ -3,9 +3,12 @@ import CartCoupon from "components/cart/CartCoupon";
 import CartItem from "components/cart/CartItem";
 import Table from "components/table/Table";
 import React from "react";
+import { useState } from "react";
 import CartTotal from "./CartTotal";
 
 const CartPage = () => {
+  const carts = JSON.parse(localStorage.getItem("carts"));
+  const [cartList, setCartList] = useState(carts);
   return (
     <div className="container">
       <Table className="">
@@ -20,7 +23,7 @@ const CartPage = () => {
           </tr>
         </thead>
         <tbody className="border-b">
-          <CartItem></CartItem>
+          <CartItem cartList={cartList} setCartList={setCartList}></CartItem>
         </tbody>
       </Table>
       <div className="flex items-center justify-between my-10">

@@ -41,13 +41,12 @@ const WidgetUpload = () => {
   }, []);
   return (
     <div>
-      <input
-        type="file"
-        name=""
-        id=""
+      <button
+        className="px-4 py-2 bg-blue-300 rounded"
         onClick={() => widgetRef.current?.open()}
-      />
-      <button>Click me</button>
+      >
+        Upload file
+      </button>
     </div>
   );
 };

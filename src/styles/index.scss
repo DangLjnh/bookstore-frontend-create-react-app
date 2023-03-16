@@ -10,6 +10,12 @@
   margin: 0 auto;
   // padding: 0 30px;
 }
+.container-admin {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  // padding: 0 30px;
+}
 
 body {
   margin: 0;
@@ -23,4 +29,33 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+table {
+  width: 100%;
+}
+thead {
+  background-color: #f7f7f8;
+}
+th,
+td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+th {
+  padding: 20px 30px;
+  font-weight: 600;
+  text-align: center;
+}
+td {
+  padding: 15px 30px;
+}
+tbody {
+}
+
+.active {
+  @apply text-red-500;
+}
+.form-layout {
+  @apply grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 mb-5 lg:mb-10;
 }

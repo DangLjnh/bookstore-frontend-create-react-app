@@ -12,7 +12,6 @@ const CategoryList = () => {
     "bg-pink-200",
   ];
   const [categoryList, setCategoryList] = useState([]);
-
   const getAllCategory = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admin/category`

@@ -29,7 +29,6 @@ const BookDetailPageStyle = styled.div`
 const BookDetailPage = () => {
   const { id } = useParams();
   const [book, setBook] = useState([]);
-  console.log("🚀 ~ file: BookDetailPage.js:32 ~ BookDetailPage ~ book:", book);
   const getSignleBook = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admin/product/${id}`

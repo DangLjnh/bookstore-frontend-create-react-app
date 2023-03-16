@@ -2,11 +2,10 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { v4 } from "uuid";
 
-const CartItem = () => {
-  const carts = JSON.parse(localStorage.getItem("carts"));
-  const [cartList, setCartList] = useState(carts);
+const CartItem = ({ cartList, setCartList }) => {
   const handleMinus = (id) => {
     const updateCart = cartList.map((item) => {
       if (item.id === id) {
@@ -27,12 +26,41 @@ const CartItem = () => {
     setCartList(updateCart);
     localStorage.setItem("carts", JSON.stringify(updateCart));
   };
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const deleted = cartList.filter((item) => {
+          return item.id !== id;
+        });
+        setCartList(deleted);
+        localStorage.removeItem("carts");
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        // if (res) {
+        //   getAllProduct();
+        // }
+      }
+    });
+  };
   return (
     <>
       {cartList?.map((item) => {
         return (
           <tr key={v4()}>
-            <td>X</td>
+            <td
+              onClick={() => {
+                handleDelete(item.id);
+              }}
+            >
+              X
+            </td>
             <td className="w-[120px] h-[160px]">
               <img
                 src={item.image_url}

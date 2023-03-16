@@ -1,4 +1,10 @@
+import AdminCategoriesCreate from "components/admin-action/AdminCategoriesCreate";
+import AdminCategoriesUpdate from "components/admin-action/AdminCategoriesUpdate";
+import AdminCreateProduct from "components/admin-action/AdminCreateProduct";
+import AdminUpdateProduct from "components/admin-action/AdminUpdateProduct";
+import AdminCategories from "components/admin/AdminCategories";
 import AdminPage from "components/admin/AdminPage";
+import AdminProduct from "components/admin/AdminProduct";
 import LayoutPage from "components/layout/LayoutPage";
 import BookDetailPage from "components/pages/BookDetailPage";
 import CartPage from "components/pages/CartPage";
@@ -27,7 +33,30 @@ const AppRoute = () => {
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
         <Route path="/checkout" element={<CheckoutPage></CheckoutPage>}></Route>
       </Route>
-      <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
+      <Route
+        path="/admin/categories"
+        element={<AdminCategories></AdminCategories>}
+      ></Route>
+      <Route
+        path="/admin/categories/create"
+        element={<AdminCategoriesCreate></AdminCategoriesCreate>}
+      ></Route>
+      <Route
+        path="/admin/categories/update/:id"
+        element={<AdminCategoriesUpdate></AdminCategoriesUpdate>}
+      ></Route>
+      <Route
+        path="/admin/products"
+        element={<AdminProduct></AdminProduct>}
+      ></Route>
+      <Route
+        path="/admin/products/create"
+        element={<AdminCreateProduct></AdminCreateProduct>}
+      ></Route>
+      <Route
+        path="/admin/products/update/:id"
+        element={<AdminUpdateProduct></AdminUpdateProduct>}
+      ></Route>
     </Routes>
   );
 };
