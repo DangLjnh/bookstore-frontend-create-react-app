@@ -5,12 +5,23 @@ import axios from "axios";
 const headers = {
   "Content-Type": "application/json",
 };
+
 const loginService = (username, password) => {
   return axios.post(
-    "https://book-api-beta.vercel.app/login",
+    `${process.env.REACT_APP_BACKEND_URL}/login`,
     {
       username,
       password,
+    },
+    { headers }
+  );
+};
+
+const registerAdminService = ({ ...dataInfo }) => {
+  return axios.post(
+    `${process.env.REACT_APP_BACKEND_URL}/register-account-admin`,
+    {
+      ...dataInfo,
     },
     { headers }
   );
@@ -31,8 +42,9 @@ const registerService = ({ ...dataInfo }) => {
     `${process.env.REACT_APP_BACKEND_URL}/register`,
     {
       ...dataInfo,
+      phone_number: +dataInfo.phone_number,
     },
     { headers }
   );
 };
-export { loginService, profileUser, registerService };
+export { loginService, profileUser, registerService, registerAdminService };

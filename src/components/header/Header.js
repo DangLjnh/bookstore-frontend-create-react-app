@@ -53,6 +53,7 @@ const Header = () => {
   ];
   const handleLogout = () => {
     cookies.remove("jwt");
+    localStorage.removeItem("carts");
     dispatch(setProfile(""));
     navigate("/login");
   };

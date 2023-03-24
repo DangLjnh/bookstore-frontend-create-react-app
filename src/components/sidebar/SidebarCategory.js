@@ -1,6 +1,16 @@
+import axios from "axios";
 import Underline from "components/icon/Underline";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { setBookList } from "redux/slice/userSlice";
 import styled from "styled-components";
+import { v4 } from "uuid";
 const SidebarCategoryStyle = styled.div`
   .accordion-content.is-active {
     height: auto;
@@ -12,6 +22,9 @@ const SidebarCategoryStyle = styled.div`
   }
 `;
 const SidebarCategory = ({ className }) => {
+  const navigate = useNavigate();
+  const search = useLocation().search;
+  const dispatch = useDispatch();
   const [toggle, setToggle] = useState("is-active");
   useEffect(() => {
     const accordionContents = document.querySelectorAll(".accordion-content");
@@ -29,6 +42,27 @@ const SidebarCategory = ({ className }) => {
       setToggle("");
     }
   };
+  const [categoryList, setCategoryList] = useState([]);
+  const getAllCategory = async () => {
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/admin/category`
+    );
+    setCategoryList(res.data);
+  };
+  const handleClickCategoryList = async (item) => {
+    navigate(`?id=${item.id}`);
+    const res = await axios.get(
+      `${
+        process.env.REACT_APP_BACKEND_URL
+      }/admin/category/product/${search.slice(4)}`
+    );
+    if (res) {
+      dispatch(setBookList(Object.assign({}, ...res.data)));
+    }
+  };
+  useEffect(() => {
+    getAllCategory();
+  }, []);
   return (
     <SidebarCategoryStyle className={`flex flex-col flex-1 ${className}`}>
       <div className="border">
@@ -41,21 +75,17 @@ const SidebarCategory = ({ className }) => {
             <Underline></Underline>
           </div>
           <div className="px-5 accordion-content">
-            <p className="mb-3">Art</p>
-            <p className="mb-3">Baby</p>
-          </div>
-        </div>
-        <div className="border-b">
-          <div
-            className={`flex items-center justify-between p-5 ${toggle}`}
-            onClick={(e) => handleClickAccordion(e)}
-          >
-            <p className="text-[17px] font-medium tracking-wide">Categories</p>
-            <Underline></Underline>
-          </div>
-          <div className="px-5 accordion-content">
-            <p className="mb-3">Art</p>
-            <p className="mb-3">Baby</p>
+            {categoryList?.map((item) => {
+              return (
+                <p
+                  className="mb-3 cursor-pointer"
+                  onClick={() => handleClickCategoryList(item)}
+                  key={v4()}
+                >
+                  {item.name}
+                </p>
+              );
+            })}
           </div>
         </div>
       </div>

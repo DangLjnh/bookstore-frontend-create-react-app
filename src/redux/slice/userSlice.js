@@ -4,11 +4,13 @@ const initialState = {
   carts: [],
   total: 0,
   quantity: 0,
+  bookList: [],
 };
 export const setProfile = createAction("setProfile");
 export const setCart = createAction("setCart");
 export const setTotal = createAction("setTotal");
 export const setQuantity = createAction("setQuantity");
+export const setBookList = createAction("setBookList");
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -26,6 +28,9 @@ const userSlice = createSlice({
       })
       .addCase(setQuantity, (state, action) => {
         state.quantity = action.payload;
+      })
+      .addCase(setBookList, (state, action) => {
+        state.bookList = action.payload;
       });
   },
 });

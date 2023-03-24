@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setProfile } from "redux/slice/userSlice";
 import {
-  loginService,
   profileUser,
+  registerAdminService,
   registerService,
 } from "services/userService";
 import Cookies from "universal-cookie";
 
-const RegisterPage = () => {
+const RegisterAdminPage = () => {
   const { profile } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,10 +23,6 @@ const RegisterPage = () => {
   const {
     control, //mac dinh
     handleSubmit, //sử dụng để lấy value
-    formState: { errors, isValid },
-    watch,
-    reset,
-    register,
     //mac dinh
   } = useForm({
     mode: onchange,
@@ -36,17 +32,14 @@ const RegisterPage = () => {
     // resolver: yupResolver(schema),
   });
   const handleRegister = async (dataInfo) => {
-    const res = await registerService(dataInfo);
+    const res = await registerAdminService(dataInfo).then((res) => res.json());
     if (res) {
-      const resLogin = await loginService(dataInfo.username, dataInfo.password);
-      if (resLogin) {
-        const profiles = await profileUser(res?.data?.access_token);
-        cookies.set("jwt", res?.data?.access_token, { path: "/" });
-        if (profiles) {
-          dispatch(setProfile(profiles.data));
-          toast.success("Register successfully!");
-          navigate("/");
-        }
+      const profiles = await profileUser(res?.data?.access_token);
+      cookies.set("jwt", res?.data?.access_token, { path: "/" });
+      if (profiles) {
+        dispatch(setProfile(profiles.data));
+        toast.success("Login successfully!");
+        navigate("/");
       }
     }
   };
@@ -59,27 +52,15 @@ const RegisterPage = () => {
         className="w-full p-5 bg-white rounded shadow-xl"
         onSubmit={handleSubmit(handleRegister)}
       >
-        <div className="grid grid-cols-2 gap-x-2">
-          <div className="mb-6">
-            <Label className={"mb-2"} name="full_name">
-              Full name
-            </Label>
-            <Input
-              name={"full_name"}
-              placeholder={"Enter full name..."}
-              control={control}
-            ></Input>
-          </div>
-          <div className="mb-6">
-            <Label className={"mb-2"} name="username">
-              Username
-            </Label>
-            <Input
-              name={"username"}
-              placeholder={"Enter username..."}
-              control={control}
-            ></Input>
-          </div>
+        <div className="mb-6">
+          <Label className={"mb-2"} name="full_name">
+            Full name
+          </Label>
+          <Input
+            name={"full_name"}
+            placeholder={"Enter full name..."}
+            control={control}
+          ></Input>
         </div>
         <div className="mb-6">
           <Label className={"mb-2"} name="password">
@@ -142,4 +123,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default RegisterAdminPage;

@@ -2,13 +2,18 @@ import Button from "components/button/Button";
 import CartCoupon from "components/cart/CartCoupon";
 import CartItem from "components/cart/CartItem";
 import Table from "components/table/Table";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartTotal from "./CartTotal";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const carts = JSON.parse(localStorage.getItem("carts"));
   const [cartList, setCartList] = useState(carts);
+  useEffect(() => {
+    if (!carts) navigate("/");
+  }, []);
   return (
     <div className="container">
       <Table className="">

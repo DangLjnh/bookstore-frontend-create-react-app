@@ -1,4 +1,3 @@
-import axios from "axios";
 import Button from "components/button/Button";
 import Input from "components/input/Input";
 import Label from "components/input/Label";
@@ -11,7 +10,8 @@ import { toast } from "react-toastify";
 import { setProfile } from "redux/slice/userSlice";
 import { loginService, profileUser } from "services/userService";
 import Cookies from "universal-cookie";
-const LoginPage = () => {
+
+const LoginAdminPage = () => {
   const { profile } = useSelector((state) => state.user);
   const cookies = new Cookies();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const LoginPage = () => {
     // resolver: yupResolver(schema),
   });
   const handleLogin = async (val) => {
-    const res = await loginService(val.username, val.password);
+    const res = await loginAdminService(val.username, val.password);
     if (res) {
       const profiles = await profileUser(res?.data?.access_token);
       cookies.set("jwt", res?.data?.access_token, { path: "/" });
@@ -93,4 +93,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginAdminPage;

@@ -12,6 +12,7 @@ import CategoryPage from "components/pages/CategoryPage";
 import CheckoutPage from "components/pages/CheckoutPage";
 import HomePage from "components/pages/HomePage";
 import LoginPage from "components/pages/LoginPage";
+import RegisterAdminPage from "components/pages/RegisterAdminPage";
 import RegisterPage from "components/pages/RegisterPage";
 import { Route, Routes } from "react-router-dom";
 
@@ -20,12 +21,16 @@ const AppRoute = () => {
     <Routes>
       <Route path="/login" element={<LoginPage></LoginPage>}></Route>
       <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
+      <Route
+        path="/admin/login"
+        element={<RegisterAdminPage></RegisterAdminPage>}
+      ></Route>
       <Route element={<LayoutPage></LayoutPage>}>
         <Route path="/" element={<HomePage></HomePage>}></Route>
-        <Route
-          path="/product-category"
-          element={<CategoryPage></CategoryPage>}
-        ></Route>
+        <Route path="/product-category" element={<CategoryPage></CategoryPage>}>
+          <Route path=":id" element={<CategoryPage></CategoryPage>}></Route>
+        </Route>
+
         <Route
           path="/product/:id"
           element={<BookDetailPage></BookDetailPage>}

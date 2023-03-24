@@ -14,8 +14,8 @@ import { toast } from "react-toastify";
 import { v4 } from "uuid";
 
 const CheckoutPage = () => {
+  const total = +localStorage.getItem("total");
   const navigate = useNavigate();
-  const { total } = useSelector((state) => state.user);
   const [bookList, setBookList] = useState([]);
   const books = JSON.parse(localStorage.getItem("carts"));
   const {
@@ -34,13 +34,14 @@ const CheckoutPage = () => {
     // resolver: yupResolver(schema),
   });
   const handleCreateBill = async (val) => {
-    console.log("🚀 ~ file: CheckoutPage.js:37 ~ handleCreateBill ~ val:", val);
     const res = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/admin/bill`,
-      { ...val, total_price: total }
+      { ...val, total_price: total + 30000 }
     );
     if (res) {
       toast.success("Order successfully!");
+      localStorage.removeItem("total");
+      localStorage.removeItem("carts");
       navigate("/");
     }
   };
@@ -74,7 +75,7 @@ const CheckoutPage = () => {
                 </Label>
                 <Input
                   type="text"
-                  name={"last-name"}
+                  name={"last_name"}
                   control={control}
                   className="w-full h-full px-4 py-3 leading-tight text-gray-700 border-2 rounded focus:outline-none focus:shadow-outline"
                 />
@@ -138,25 +139,23 @@ const CheckoutPage = () => {
                   <td className="">Product</td>
                   <td className="">Subtotal</td>
                 </tr>
-                <tr className="border-b">
-                  {bookList?.map((item) => {
-                    return (
-                      <>
-                        <td className="">
-                          {item?.name} × <span>{item?.quantity}</span>
-                        </td>
-                        <td className="">${item.quantity * item.price}</td>
-                      </>
-                    );
-                  })}
-                </tr>
+                {bookList?.map((item) => {
+                  return (
+                    <tr className="border-b">
+                      <td className="">
+                        {item?.name} × <span>{item?.quantity}</span>
+                      </td>
+                      <td className="">${item.quantity * item.price}</td>
+                    </tr>
+                  );
+                })}
                 <tr className="border-b">
                   <td className="">Shipping</td>
-                  <td className="">$300000</td>
+                  <td className="">$30000</td>
                 </tr>
                 <tr className="border-b">
                   <td className="">Total</td>
-                  <td className="!font-bold">${total + 300000}</td>
+                  <td className="!font-bold">${total + 30000}</td>
                 </tr>
               </tbody>
             </Table>

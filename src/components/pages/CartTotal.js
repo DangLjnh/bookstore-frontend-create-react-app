@@ -14,9 +14,10 @@ const CartTotal = () => {
   const [cartList, setCartList] = useState(carts);
   const { total } = useSelector((state) => state.user);
   useEffect(() => {
-    const sub = cartList.reduce((acc, val) => {
-      return (acc += val.quantity * val.price);
+    const sub = cartList?.reduce((acc, val) => {
+      return (acc += val?.quantity * val.price);
     }, 0);
+    localStorage.setItem("total", sub);
     dispatch(setTotal(sub));
   }, []);
   return (
@@ -37,7 +38,7 @@ const CartTotal = () => {
           </tr>
           <tr>
             <th className="w-[20%] font-medium">Total</th>
-            <td className="!font-bold">${total + 30000}</td>
+            <td className="!font-bold">${+total + 30000}</td>
           </tr>
         </tbody>
       </Table>
