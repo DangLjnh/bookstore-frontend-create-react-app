@@ -28,10 +28,6 @@ const AdminUpdateProduct = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admin/product/${id}`
     );
-    console.log(
-      "🚀 ~ file: AdminUpdateProduct.js:31 ~ getSingleProduct ~ res:",
-      res
-    );
     if (res) {
       setProduct({
         name: res?.data.data.productInfo?.name,
@@ -126,7 +122,7 @@ const AdminUpdateProduct = () => {
       },
       (err, result) => {
         // get photoURL: result.info.files[0].uploadInfo.url
-        setDataImage(result.info.files[0].uploadInfo.url);
+        setDataImage(result?.info?.files[0].uploadInfo.url);
       }
     );
   }, []);
