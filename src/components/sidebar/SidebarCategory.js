@@ -51,14 +51,6 @@ const SidebarCategory = ({ className }) => {
   };
   const handleClickCategoryList = async (item) => {
     navigate(`?id=${item.id}`);
-    const res = await axios.get(
-      `${
-        process.env.REACT_APP_BACKEND_URL
-      }/admin/category/product/${search.slice(4)}`
-    );
-    if (res) {
-      dispatch(setBookList(Object.assign({}, ...res.data)));
-    }
   };
   useEffect(() => {
     getAllCategory();

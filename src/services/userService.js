@@ -1,5 +1,6 @@
 import axios from "axios";
-
+const ROLE_ADMIN = "ROLE_56590ba1-e30d-4d77-a447-19d6c4f91925";
+const ROLE_USER = "ROLE_62f36103-2be0-4428-b78d-3dec372c02ed";
 // import axios from "../config/axios";
 
 const headers = {
@@ -22,6 +23,8 @@ const registerAdminService = ({ ...dataInfo }) => {
     `${process.env.REACT_APP_BACKEND_URL}/register-account-admin`,
     {
       ...dataInfo,
+      role_ids: [ROLE_ADMIN],
+      phone_number: +dataInfo.phone_number,
     },
     { headers }
   );
@@ -42,6 +45,7 @@ const registerService = ({ ...dataInfo }) => {
     `${process.env.REACT_APP_BACKEND_URL}/register`,
     {
       ...dataInfo,
+      role_ids: [ROLE_USER],
       phone_number: +dataInfo.phone_number,
     },
     { headers }

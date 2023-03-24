@@ -2,9 +2,11 @@ import AdminCategoriesCreate from "components/admin-action/AdminCategoriesCreate
 import AdminCategoriesUpdate from "components/admin-action/AdminCategoriesUpdate";
 import AdminCreateProduct from "components/admin-action/AdminCreateProduct";
 import AdminUpdateProduct from "components/admin-action/AdminUpdateProduct";
+import AdminBill from "components/admin/AdminBill";
 import AdminCategories from "components/admin/AdminCategories";
 import AdminPage from "components/admin/AdminPage";
 import AdminProduct from "components/admin/AdminProduct";
+import AdminUser from "components/admin/AdminUser";
 import LayoutPage from "components/layout/LayoutPage";
 import BookDetailPage from "components/pages/BookDetailPage";
 import CartPage from "components/pages/CartPage";
@@ -62,6 +64,8 @@ const AppRoute = () => {
         path="/admin/products/update/:id"
         element={<AdminUpdateProduct></AdminUpdateProduct>}
       ></Route>
+      <Route path="/admin/bills" element={<AdminBill></AdminBill>}></Route>
+      <Route path="/admin/users" element={<AdminUser></AdminUser>}></Route>
     </Routes>
   );
 };

@@ -19,11 +19,6 @@ const HeaderAdmin = () => {
       url: "/admin/products",
     },
     {
-      id: 5,
-      name: "Stocks",
-      url: "/admin/stocks",
-    },
-    {
       id: 4,
       name: "Bills",
       url: "/admin/bills",

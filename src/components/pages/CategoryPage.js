@@ -14,13 +14,20 @@ const CategoryPage = () => {
   const dispatch = useDispatch();
   const search = useLocation().search;
   const [bookList, setBookList] = useState();
+
   const { carts } = useSelector((state) => state.user);
   if (search) {
-    console.log(
-      "🚀 ~ file: CategoryPage.js:17 ~ CategoryPage ~ bookList:",
-      bookList
-    );
   }
+  const handleBookListCategory = async (item) => {
+    const res = await axios.get(
+      `${
+        process.env.REACT_APP_BACKEND_URL
+      }/admin/category/product/${search.slice(4)}`
+    );
+    if (res) {
+      setBookList(...res.data.product_infos);
+    }
+  };
   const getAllBook = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admin/product`
@@ -28,7 +35,11 @@ const CategoryPage = () => {
     setBookList(res.data);
   };
   useEffect(() => {
-    getAllBook();
+    if (search) {
+      handleBookListCategory();
+    } else {
+      getAllBook();
+    }
   }, []);
 
   const handleAddToCart = (item) => {
@@ -64,35 +75,21 @@ const CategoryPage = () => {
             <p>View all</p>
           </div>
           <div className="grid grid-cols-4 gap-5">
-            {bookList?.products
-              ? bookList?.products.map(async (item) => {
-                  <BookItem
-                    key={v4()}
-                    id={item?.id}
-                    title={item?.name}
-                    author={item?.author_name}
-                    imageURL={item?.image_url}
-                    price={item?.price}
-                    slug={item?.slug}
-                    handleAddToCart={() => handleAddToCart(item?.productInfo)}
-                    // isExistCart={itemExistCart(item.id)}
-                  ></BookItem>;
-                })
-              : bookList?.map((item) => {
-                  return (
-                    <BookItem
-                      key={v4()}
-                      id={item?.id}
-                      title={item?.productInfo?.name}
-                      author={item?.productInfo?.author_name}
-                      imageURL={item?.productInfo?.image_url}
-                      price={item?.productInfo?.price}
-                      slug={item?.productInfo?.slug}
-                      handleAddToCart={() => handleAddToCart(item?.productInfo)}
-                      // isExistCart={itemExistCart(item.id)}
-                    ></BookItem>
-                  );
-                })}
+            {/* {bookList?.map((item) => {
+              return (
+                <BookItem
+                  key={v4()}
+                  id={item?.id}
+                  title={item?.productInfo?.name}
+                  author={item?.productInfo?.author_name}
+                  imageURL={item?.productInfo?.image_url}
+                  price={item?.productInfo?.price}
+                  slug={item?.productInfo?.slug}
+                  handleAddToCart={() => handleAddToCart(item?.productInfo)}
+                  // isExistCart={itemExistCart(item.id)}
+                ></BookItem>
+              );
+            })} */}
           </div>
         </div>
       </div>
