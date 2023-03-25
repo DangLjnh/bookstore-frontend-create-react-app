@@ -38,16 +38,13 @@ const RegisterPage = () => {
   const handleRegister = async (dataInfo) => {
     const res = await registerService(dataInfo);
     if (res) {
-      const resLogin = await loginService(dataInfo.username, dataInfo.password);
-      if (resLogin) {
-        const profiles = await profileUser(res?.data?.access_token);
-        cookies.set("jwt", res?.data?.access_token, { path: "/" });
-        if (profiles) {
-          dispatch(setProfile(profiles.data));
-          toast.success("Register successfully!");
-          navigate("/");
-        }
-      }
+      toast.success("Register successfully!");
+      navigate("/login");
+      // const profiles = await profileUser(res?.data?.access_token);
+      // cookies.set("jwt", res?.data?.access_token, { path: "/" });
+      // if (profiles) {
+      //   dispatch(setProfile(profiles.data));
+      // }
     }
   };
   useEffect(() => {

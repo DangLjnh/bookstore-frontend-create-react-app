@@ -36,10 +36,14 @@ const LoginPage = () => {
     if (res) {
       const profiles = await profileUser(res?.data?.access_token);
       cookies.set("jwt", res?.data?.access_token, { path: "/" });
-      if (profiles) {
-        dispatch(setProfile(profiles.data));
-        toast.success("Login successfully!");
-        navigate("/");
+      if (val.username === "admin" && profiles) {
+        navigate("/admin/users");
+      } else {
+        if (profiles) {
+          dispatch(setProfile(profiles.data));
+          toast.success("Login successfully!");
+          navigate("/");
+        }
       }
     }
   };

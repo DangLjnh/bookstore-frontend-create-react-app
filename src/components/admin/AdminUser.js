@@ -13,8 +13,7 @@ const AdminUser = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admin/user`
     );
-    console.log("🚀 ~ file: AdminUser.js:16 ~ getAllUser ~ res:", res);
-    setUserList(res.data);
+    setUserList(res?.data?.filter((user) => user?.full_name !== "Admin"));
   };
   useEffect(() => {
     getAllUser();
@@ -31,7 +30,7 @@ const AdminUser = () => {
               <th scope="col">Email</th>
               <th scope="col">Address</th>
               <th scope="col">Phone number</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -43,7 +42,7 @@ const AdminUser = () => {
                     <td>{product?.email}</td>
                     <td>{product?.address.slice(0, 14)}</td>
                     <td>{product?.phone_number}</td>
-                    <td className="gap-2 d-flex d-flex-col justify-content-center align-items-center">
+                    {/* <td className="gap-2 d-flex d-flex-col justify-content-center align-items-center">
                       <td className="">
                         <button
                           className="px-4 py-2 mr-5 bg-green-200 rounded-lg"
@@ -66,7 +65,7 @@ const AdminUser = () => {
                           Delete
                         </button>
                       </td>
-                    </td>
+                    </td> */}
                   </tr>
                 );
               })

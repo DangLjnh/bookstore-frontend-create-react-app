@@ -109,7 +109,9 @@ const AdminCreateProduct = () => {
             <Label className="mb-5">Upload image</Label>
             <button
               className="px-4 py-2 bg-blue-300 rounded"
-              onClick={() => widgetRef.current?.open()}
+              onClick={() => {
+                widgetRef.current?.open();
+              }}
             >
               Upload file
             </button>

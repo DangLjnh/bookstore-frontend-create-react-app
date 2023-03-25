@@ -14,9 +14,10 @@ const CategoryPage = () => {
   const dispatch = useDispatch();
   const search = useLocation().search;
   const [bookList, setBookList] = useState();
-
+  const [bookListCategory, setBookListCategory] = useState();
   const { carts } = useSelector((state) => state.user);
   if (search) {
+    console.log(search.slice(4));
   }
   const handleBookListCategory = async (item) => {
     const res = await axios.get(
@@ -25,7 +26,7 @@ const CategoryPage = () => {
       }/admin/category/product/${search.slice(4)}`
     );
     if (res) {
-      setBookList(...res.data.product_infos);
+      setBookListCategory(res.data.product_infos);
     }
   };
   const getAllBook = async () => {
@@ -75,21 +76,37 @@ const CategoryPage = () => {
             <p>View all</p>
           </div>
           <div className="grid grid-cols-4 gap-5">
-            {/* {bookList?.map((item) => {
-              return (
-                <BookItem
-                  key={v4()}
-                  id={item?.id}
-                  title={item?.productInfo?.name}
-                  author={item?.productInfo?.author_name}
-                  imageURL={item?.productInfo?.image_url}
-                  price={item?.productInfo?.price}
-                  slug={item?.productInfo?.slug}
-                  handleAddToCart={() => handleAddToCart(item?.productInfo)}
-                  // isExistCart={itemExistCart(item.id)}
-                ></BookItem>
-              );
-            })} */}
+            {search
+              ? bookListCategory?.map((item) => {
+                  return (
+                    <BookItem
+                      key={v4()}
+                      id={item?.id}
+                      title={item?.name}
+                      author={item?.author_name}
+                      imageURL={item?.image_url}
+                      price={item?.price}
+                      slug={item?.slug}
+                      handleAddToCart={() => handleAddToCart(item?.productInfo)}
+                      // isExistCart={itemExistCart(item.id)}
+                    ></BookItem>
+                  );
+                })
+              : bookList?.map((item) => {
+                  return (
+                    <BookItem
+                      key={v4()}
+                      id={item?.id}
+                      title={item?.productInfo?.name}
+                      author={item?.productInfo?.author_name}
+                      imageURL={item?.productInfo?.image_url}
+                      price={item?.productInfo?.price}
+                      slug={item?.productInfo?.slug}
+                      handleAddToCart={() => handleAddToCart(item?.productInfo)}
+                      // isExistCart={itemExistCart(item.id)}
+                    ></BookItem>
+                  );
+                })}
           </div>
         </div>
       </div>
